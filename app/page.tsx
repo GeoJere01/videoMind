@@ -187,7 +187,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-800 relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-r from-gray-600 via-white-600 to-gray-800 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[length:20px_20px]"></div>
         <div className="absolute -left-32 -bottom-32 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
         <div className="absolute -right-32 -top-32 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
