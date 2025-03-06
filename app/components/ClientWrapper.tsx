@@ -1,7 +1,7 @@
 "use client";
 import { SchematicProvider } from "@schematichq/schematic-react";
 import SchematicWrapped from "./SchematicWrapped";
-import { ConvexClientProvider } from "./ConvexClientProvider";
+import ConvexClientProvider from "./ConvexClientProvider";
 
 export default function ClientWrapper({
   children,

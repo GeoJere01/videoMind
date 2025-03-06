@@ -13,6 +13,10 @@ import { streamText, tool } from "ai";
 import { currentUser } from "@clerk/nextjs/server";
 import { getVideoDetails } from "@/actions/getVideoDetails";
 import fetchTranscript from "@/tools/fetchTranscript";
+import { generateImage } from "@/tools/generateImage";
+import { z } from "zod";
+import { getVideoIdFromUrl } from "@/lib/getVideoFromUrl";
+import generateTitle from "@/tools/generateTitle";
 
 export async function POST(req: Request) {
   const { messages, videoId } = await req.json();
@@ -48,7 +52,31 @@ export async function POST(req: Request) {
       },
       ...messages,
     ],
-    tools: { fetchTranscript: fetchTranscript },
+    tools: {
+      fetchTranscript: fetchTranscript,
+      generateImage: generateImage(videoId, user.id),
+      getVideoDetails: tool({
+        description: "Get the details of a Youtube video",
+        parameters: z.object({
+          videoId: z.string().describe("The video ID to get the details for"),
+        }),
+        execute: async ({ videoId }) => {
+          const videoDetails = await getVideoDetails(videoId);
+          return { videoDetails };
+        },
+      }),
+      extractVideoId: tool({
+        description: "Extract the video ID from a URL",
+        parameters: z.object({
+          url: z.string().describe("The URL to extract the video ID from"),
+        }),
+        execute: async ({ url }) => {
+          const videoId = await getVideoIdFromUrl(url);
+          return { videoId };
+        },
+      }),
+      generateTitle: generateTitle,
+    },
   });
 
   return result.toDataStreamResponse();
